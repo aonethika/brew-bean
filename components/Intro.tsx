@@ -33,8 +33,8 @@ export default function Intro({ onFinish }: { onFinish: () => void }) {
   }, []);
 
   const beanCount = useMemo(() => {
-    if (typeof window === "undefined") return 120;
-    return window.innerWidth < 480 ? 70 : window.innerWidth < 768 ? 90 : 120;
+    if (typeof window === "undefined") return 1000;
+    return window.innerWidth < 480 ? 200 : window.innerWidth < 768 ? 300 : 300;
   }, []);
 
   const beans = useMemo<Bean[]>(() => {
