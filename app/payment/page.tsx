@@ -7,29 +7,39 @@ import { useRouter } from "next/navigation";
 export default function PaymentPage() {
   const cart = useCartStore((s) => s.cart);
   const clearCart = useCartStore((s) => s.clearCart);
+  const addOrder = useCartStore((s) => s.addOrder);
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
+
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
-  const placeOrder = () => {
-    if (cart.length === 0) return;
+ const placeOrder = () => {
+  if (cart.length === 0) return;
 
-    setLoading(true);
+  setLoading(true);
+
+  setTimeout(() => {
+
+    addOrder({
+      id: Date.now().toString(),
+      items: cart,
+      total,
+      date: Date.now(),
+    });
+
+    clearCart();
+    setLoading(false);
+    setSuccess(true);
 
     setTimeout(() => {
-      clearCart();
-      setLoading(false);
-      setSuccess(true);
+      router.push("/");
+    }, 1400);
 
-      setTimeout(() => {
-        router.push("/");
-      }, 1400);
-    }, 1600);
-  };
-
+  }, 1600);
+};
   return (
     <div className="min-h-screen bg-[#f7f3ee] flex items-center justify-center px-4 text-[#2a1414]">
 

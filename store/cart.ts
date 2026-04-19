@@ -8,19 +8,30 @@ export type CartItem = {
   qty: number;
 };
 
+export type Order = {
+  id: string;
+  items: CartItem[];
+  total: number;
+  date: number;
+};
+
 type CartState = {
   cart: CartItem[];
+  orders: Order[];
 
   addItem: (item: CartItem) => void;
   increaseQty: (id: string) => void;
   decreaseQty: (id: string) => void;
   clearCart: () => void;
+
+  addOrder: (order: Order) => void;
 };
 
 export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
       cart: [],
+      orders: [],
 
       addItem: (item) =>
         set((state) => {
@@ -56,9 +67,15 @@ export const useCartStore = create<CartState>()(
         })),
 
       clearCart: () => set({ cart: [] }),
+
+    
+      addOrder: (order) =>
+        set((state) => ({
+          orders: [order, ...state.orders],
+        })),
     }),
     {
-      name: "brew-cart-storage",
+      name: "brew-storage", 
     }
   )
 );
